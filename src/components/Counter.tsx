@@ -1,17 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { CounterState } from '../redux/types.ts'
-import { increment, decrement } from '../redux/actions.ts' 
+import { CounterAction, CounterState } from '../redux/types.ts'
+import { decrementAsync, incrementAsync } from '../redux/actions.ts'
+import { selectCount } from '../redux/selectors.ts'
+import { ThunkDispatch } from '@reduxjs/toolkit'
 
 const Counter = () => {
-  const count = useSelector((state: CounterState) => state.count)
-  const dispatch = useDispatch()
-    return (
-      <div className='counter'>
-        <h1 className='count'>Count: {count}</h1>
-        <button className='increment' onClick={() => dispatch(increment())}>increment</button>
-        <button className='decrement' onClick={() => dispatch(decrement())}>decrement</button>
-      </div>
-    )
+  const count = useSelector(selectCount)
+  const dispatch = useDispatch<ThunkDispatch<CounterState, unknown, CounterAction>>()
+
+  return (
+    <div className="counter">
+      <h1 className="count">Count: {count}</h1>
+      <button className="increment" onClick={() => dispatch(incrementAsync())}>Increment</button>
+      <button className="decrement" onClick={() => dispatch(decrementAsync())}>Decrement</button>
+    </div>
+  )
 }
-  
+
 export default Counter
